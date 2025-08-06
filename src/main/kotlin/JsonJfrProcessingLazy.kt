@@ -1,9 +1,39 @@
-package jfr_processor.profilelib
+package jfr_processor.profilelib.jsonjfr
+
+/* Lazy alternatives for processing JFR JSON data */
+
+import jfr_processor.profilelib.get_valid_tests
 
 import kotlinx.serialization.json.*
 import java.io.InputStream
 import kotlin.io.path.createTempDirectory
 import kotlin.streams.asSequence
+
+fun lazy_samples_disassemble(file: String): Sequence<List<Frame>> {
+    val tempDir = createTempDirectory()
+    java.lang.ProcessBuilder(
+        jfr,
+        "disassemble",
+        "--output", tempDir.toString(),
+        "--max-size", "1000000",
+        file
+    ).start().waitFor()
+    return sequence {
+        java.nio.file.Files.walk(tempDir)
+            .asSequence()
+            .filter { it.toString().endsWith(".jfr") }
+            .map {
+                val process_frame_function = when (file.substringAfterLast("/").substringBefore("-")) {
+                    "jvm" -> ::jvm_process_frame
+                    "linuxX64" -> ::native_process_frame
+                    else -> throw NotImplementedError("Unknown platform: $file")
+                }
+                load_jfr_as_json(it.toString())
+                    .let { process_jfr_data(it, process_frame_function) }
+            }
+            .forEach { yieldAll(it) }
+    }
+}
 
 class WrappedInputStream(private val input: InputStream) : InputStream() {
     init {
@@ -40,31 +70,6 @@ class WrappedInputStream(private val input: InputStream) : InputStream() {
     }
 }
 
-fun lazy_process_disassemble(file: String): Sequence<List<Frame>> {
-    val tempDir = createTempDirectory()
-    java.lang.ProcessBuilder(
-        jfr,
-        "disassemble",
-        "--output", tempDir.toString(),
-        "--max-size", "1000000",
-        file
-    ).start().waitFor()
-    return sequence {
-        java.nio.file.Files.walk(tempDir)
-            .asSequence()
-            .filter { it.toString().endsWith(".jfr") }
-            .map {
-                val process_frame_function = when (file.substringAfterLast("/").substringBefore("-")) {
-                    "jvm" -> ::jvm_process_frame
-                    "linuxX64" -> ::native_process_frame
-                    else -> throw NotImplementedError("Unknown platform: $file")
-                }
-                load_jfr_as_json(it.toString())
-                    .let { process_jfr_data(it, process_frame_function) }
-            }
-            .forEach { yieldAll(it) }
-    }
-}
 
 fun lazy_samples(filename: String):
         Sequence<List<JsonElement>> =
@@ -101,7 +106,6 @@ fun lazy_function_names(root: String, platform: String): Sequence<String> = sequ
             println(test)
             lazy_samples(
                 root + platform + "-" + test + ".jfr",
-
             )
                 .map {
                     it.mapNotNull {

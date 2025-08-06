@@ -13,7 +13,9 @@ data class DwarfData(
     val line: Int?
 )
 
-fun ktor_get_native_debug_map(project_root: String): Map<String, DwarfData> =
+typealias DebugMap = Map<String, DwarfData>
+
+fun ktor_get_native_debug_map(project_root: String): DebugMap =
     walkPath(project_root)
         .filter { it.contains("/build/bin/linuxX64/") }
         .filter { it.endsWith(".kexe") }

@@ -221,7 +221,9 @@ fun old_main() {
 //    map.processKeys { println(it); true }
 }
 
-fun ktor_get_fun_to_src_map(project_root: String): Map<String, Set<String>> =
+typealias FunToSrcMap = Map<String, Set<String>>
+
+fun ktor_get_fun_to_src_map(project_root: String): FunToSrcMap =
     walkPath(project_root)
         .filter { it.endsWith("/build") }
         .map { get_fun_to_src_map(it) }

@@ -1,14 +1,48 @@
-package jfr_processor.profilelib
+package jfr_processor.profilelib.jsonjfr
 
-import jfr_processor.profilelib.jfr
+/* Original method, data structures and utility functions for processing JFR
+   data. It is based on `jfr print --json` command. Superceded by using
+   `jdk.jfr` library directly which is much faster, convenient but discovered
+    later. This module is kept if some older notebooks need to be replicated.
+ */
 
-import kotlinx.serialization.json.JsonElement
+import jfr_processor.profilelib.get_valid_tests
+
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+
+val jfr = "/home/Martin.Zimen/.jdks/openjdk-24.0.1/bin/jfr"
+
+data class Frame(val name: String, val package_: String?, val class_: String,
+                 val linkage_name: String? = null) {}
+
+fun get_name(frame: Frame): String = frame.class_ + "." + frame.name
+
+typealias StackTrace = List<Frame>
+typealias Samples = List<StackTrace>
+
+fun list_functions(samples: Samples): Set<String> =
+    sequence { samples.asSequence().forEach { yieldAll(it) } }
+        .filter { it.class_.startsWith("kotlin/") }
+        .map { get_name(it) }
+        .toSet()
+
+data class JvmNativePair<T>(val jvm: T, val native: T)
+
+fun get_samples(root: String): Sequence<JvmNativePair<Samples>> =
+    get_valid_tests(root)
+        .map { filename ->
+            println("Processing $filename")
+            fun process(platform: String, process_frame_function: (JsonElement) -> Frame?): Samples =
+                load_jfr_as_json(root + platform + "-" + filename + ".jfr")
+                    .let { process_jfr_data(it, process_frame_function) }
+            JvmNativePair(process("jvm", ::jvm_process_frame), process("linuxX64", ::native_process_frame))
+        }
 
 operator fun JsonElement.get(key: String): JsonElement? =
     (this as? JsonObject)
@@ -117,6 +151,3 @@ fun process_jfr_data(jfr_data: JsonElement, process_frame_function: (JsonElement
                 .map { process_frame_function(it) }
                 .filterNotNull()
         }
-
-
-
