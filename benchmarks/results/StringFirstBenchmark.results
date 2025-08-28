@@ -1,0 +1,22 @@
+jvm summary:
+Benchmark                                    Mode  Cnt          Score          Error  Units
+StringFirstBenchmark.big                    thrpt    5  601116959.805 ± 44032549.310  ops/s
+StringFirstBenchmark.big_noop               thrpt    5  471312852.055 ± 39407898.011  ops/s
+StringFirstBenchmark.big_predicate_begin    thrpt    5  591914125.520 ±  7555268.861  ops/s
+StringFirstBenchmark.big_predicate_iter     thrpt    5      43980.597 ±      257.717  ops/s
+StringFirstBenchmark.small                  thrpt    5  605937149.760 ± 97836780.614  ops/s
+StringFirstBenchmark.small_noop             thrpt    5  471960097.349 ±  3045661.954  ops/s
+StringFirstBenchmark.small_predicate_begin  thrpt    5  584200029.887 ±  3571651.624  ops/s
+StringFirstBenchmark.small_predicate_iter   thrpt    5  453775108.932 ±  5164132.518  ops/s
+
+linuxX64 summary:
+Benchmark                                    Mode  Cnt          Score         Error    Units
+StringFirstBenchmark.big                    thrpt    5  227455720.733 ±  324230.149  ops/sec
+StringFirstBenchmark.big_noop               thrpt    5  620456854.762 ± 1110899.281  ops/sec
+StringFirstBenchmark.big_predicate_begin    thrpt    5  261357773.101 ± 1228494.673  ops/sec
+StringFirstBenchmark.big_predicate_iter     thrpt    5      12397.577 ±      46.322  ops/sec
+StringFirstBenchmark.small                  thrpt    5  221099222.218 ±  157511.224  ops/sec
+StringFirstBenchmark.small_noop             thrpt    5  621611176.768 ±  729840.685  ops/sec
+StringFirstBenchmark.small_predicate_begin  thrpt    5  253856319.832 ± 4324623.561  ops/sec
+StringFirstBenchmark.small_predicate_iter   thrpt    5  238149692.137 ±  496131.600  ops/sec
+

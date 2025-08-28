@@ -1,0 +1,27 @@
+linuxX64 summary:
+Benchmark                                        Mode  Cnt          Score         Error    Units
+CollectionSizeOrDefaultBenchmark.collection     thrpt    5  232869103.251 ± 4241133.137  ops/sec
+CollectionSizeOrDefaultBenchmark.list           thrpt    5  240108305.323 ± 1529392.603  ops/sec
+CollectionSizeOrDefaultBenchmark.nonCollection  thrpt    5  260153388.520 ±  341100.262  ops/sec
+
+jvm summary:
+Benchmark                                        Mode  Cnt          Score           Error  Units
+CollectionSizeOrDefaultBenchmark.collection     thrpt    5  661073357.869 ± 138574691.508  ops/s
+CollectionSizeOrDefaultBenchmark.list           thrpt    5  642344949.059 ±  41376384.767  ops/s
+CollectionSizeOrDefaultBenchmark.nonCollection  thrpt    5   79611373.507 ±  10126974.067  ops/s
+
+---
+
+GCAfterIteration enabled (however, GC is included in the time)
+
+linuxX64 summary:
+Benchmark                                        Mode  Cnt          Score         Error    Units
+CollectionSizeOrDefaultBenchmark.collection     thrpt    5  232253603.550 ±  826431.394  ops/sec
+CollectionSizeOrDefaultBenchmark.list           thrpt    5  241374252.151 ±  532037.037  ops/sec
+CollectionSizeOrDefaultBenchmark.nonCollection  thrpt    5  261504282.016 ± 1740531.475  ops/sec
+
+jvm summary:
+Benchmark                                        Mode  Cnt          Score          Error  Units
+CollectionSizeOrDefaultBenchmark.collection     thrpt    5  670413964.838 ±  2694653.922  ops/s
+CollectionSizeOrDefaultBenchmark.list           thrpt    5  685833732.890 ±  7136062.076  ops/s
+CollectionSizeOrDefaultBenchmark.nonCollection  thrpt    5   75898373.388 ± 13269455.818  ops/s

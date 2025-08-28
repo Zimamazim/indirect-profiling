@@ -1,0 +1,61 @@
+linuxX64 summary:
+Benchmark                         Mode  Cnt         Score        Error    Units
+ToByteArrayBenchmark.big_list    thrpt    5          104.382 ±      2.152  ops/sec
+ToByteArrayBenchmark.big_set     thrpt    5      569,304.133 ±    441.508  ops/sec
+ToByteArrayBenchmark.empty_list  thrpt    5   72,503,475.251 ± 163789.511  ops/sec
+ToByteArrayBenchmark.empty_set   thrpt    5   73,200,835.231 ±  67002.559  ops/sec
+ToByteArrayBenchmark.small_list  thrpt    5   12,206,439.951 ± 611005.384  ops/sec
+ToByteArrayBenchmark.small_set   thrpt    5   14,314,606.773 ±  40095.491  ops/sec
+
+jvm summary:
+Benchmark                         Mode  Cnt          Score          Error  Units
+ToByteArrayBenchmark.big_list    thrpt    5          959.337 ±      513.068  ops/s
+ToByteArrayBenchmark.big_set     thrpt    5    3,450,070.172 ±   257113.629  ops/s
+ToByteArrayBenchmark.empty_list  thrpt    5  349,030,471.617 ± 78478570.700  ops/s
+ToByteArrayBenchmark.empty_set   thrpt    5  355,847,006.321 ± 17142445.009  ops/s
+ToByteArrayBenchmark.small_list  thrpt    5  141,023,368.530 ±  6750412.267  ops/s
+ToByteArrayBenchmark.small_set   thrpt    5   95,690,941.838 ±   801451.977  ops/s
+
+---
+
+just a paranoid rerun
+
+linuxX64 summary:
+Benchmark                         Mode  Cnt         Score         Error    Units
+ToByteArrayBenchmark.big_list    thrpt    5           99.823 ±       1.062  ops/sec
+ToByteArrayBenchmark.big_set     thrpt    5      552,947.603 ±    6791.529  ops/sec
+ToByteArrayBenchmark.empty_list  thrpt    5   64,216,737.101 ± 2938985.563  ops/sec
+ToByteArrayBenchmark.empty_set   thrpt    5   65,973,739.163 ±  813872.753  ops/sec
+ToByteArrayBenchmark.small_list  thrpt    5   12,018,828.737 ±  415976.865  ops/sec
+ToByteArrayBenchmark.small_set   thrpt    5   13,446,893.222 ±  282825.168  ops/sec
+
+jvm summary:
+Benchmark                         Mode  Cnt          Score          Error  Units
+ToByteArrayBenchmark.big_list    thrpt    5        1,031.460 ±       89.831  ops/s
+ToByteArrayBenchmark.big_set     thrpt    5    3,343,793.236 ±    31755.995  ops/s
+ToByteArrayBenchmark.empty_list  thrpt    5  362,356,498.423 ±  4583717.930  ops/s
+ToByteArrayBenchmark.empty_set   thrpt    5  358,473,858.843 ± 48949229.480  ops/s
+ToByteArrayBenchmark.small_list  thrpt    5  146,052,502.084 ±   950519.450  ops/s
+ToByteArrayBenchmark.small_set   thrpt    5   95,141,092.614 ± 10872819.017  ops/s
+
+---
+
+GCAfterIteration (however, the GC is included in the time)
+
+linuxX64 summary:
+Benchmark                         Mode  Cnt         Score       Error    Units
+ToByteArrayBenchmark.big_list    thrpt    5           96.223 ±     0.101  ops/sec
+ToByteArrayBenchmark.big_set     thrpt    5      483,153.843 ±   952.851  ops/sec
+ToByteArrayBenchmark.empty_list  thrpt    5   65,186,859.955 ± 74451.821  ops/sec
+ToByteArrayBenchmark.empty_set   thrpt    5   59,909,313.972 ± 60201.555  ops/sec
+ToByteArrayBenchmark.small_list  thrpt    5   11,653,290.864 ± 27075.469  ops/sec
+ToByteArrayBenchmark.small_set   thrpt    5   12,620,194.642 ± 36030.080  ops/sec
+
+jvm summary:
+Benchmark                         Mode  Cnt          Score          Error  Units
+ToByteArrayBenchmark.big_list    thrpt    5          912.888 ±     100.052  ops/s
+ToByteArrayBenchmark.big_set     thrpt    5    3,085,563.719 ±    15340.577 ops/s
+ToByteArrayBenchmark.empty_list  thrpt    5  320,125,808.686 ± 11905925.424 ops/s
+ToByteArrayBenchmark.empty_set   thrpt    5  321,136,990.342 ±  4214041.321 ops/s
+ToByteArrayBenchmark.small_list  thrpt    5  127,709,083.852 ±   809475.051 ops/s
+ToByteArrayBenchmark.small_set   thrpt    5   84,866,708.808 ±  2071890.228 ops/s
