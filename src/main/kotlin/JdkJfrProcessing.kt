@@ -5,15 +5,20 @@ import jdk.jfr.consumer.RecordingFile
 import kotlin.collections.all
 import kotlin.io.path.Path
 
+var executionSamplesWithoutStackTrace = 0
+
+//fun getExecutionSamplesWithoutStackTrace(): Int = executionSamplesWithoutStackTrace
+
 fun lazy_samples(filename: String): Sequence<List<RecordedFrame>> = sequence {
     RecordingFile(Path(filename)).use {
         while (it.hasMoreEvents()) {
             it.readEvent()!!
                 .takeIf { it.eventType.name == "jdk.ExecutionSample" }
                 ?.let {
-                    val stackTrace = it.stackTrace!!
-                    assert(!stackTrace.isTruncated())
-                    yield(stackTrace.frames)
+                    it.stackTrace
+                        ?.also { assert(!it.isTruncated()) }
+                        ?.let { yield(it.frames) }
+                        ?: { executionSamplesWithoutStackTrace += 1 }
                 }
         }
     }
