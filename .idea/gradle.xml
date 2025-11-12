@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/benchmarks" />
-            <option value="$PROJECT_DIR$/pac" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -7,6 +7,5 @@
       </list>
     </option>
     <option name="heapMaxLimitInMib" value="64000" />
-    <option name="jdkName" value="valhalla-ea-23" />
   </component>
 </project>
