@@ -1,7 +1,11 @@
+import kotlinx.benchmark.gradle.NativeBenchmarkTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+
 plugins {
-    kotlin("multiplatform") version "2.1.0"
-    id("org.jetbrains.kotlinx.benchmark") version "0.5.0-SNAPSHOT"
+    kotlin("multiplatform")
+    id("org.jetbrains.kotlinx.benchmark") version "0.4.14"
     kotlin("plugin.allopen") version "2.0.20"
+//    kotlin("plugin.serialization")
 }
 
 group = "org.jetbrains.kotlinx"
@@ -21,7 +25,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.5.0-SNAPSHOT")
+                implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.14")
+//                implementation("io.ktor:ktor-utils:3.3.0")
+//                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
             }
         }
     }
@@ -30,13 +36,16 @@ kotlin {
 benchmark {
     targets {
         register("jvm")
-        register("linuxX64")
+        register("linuxX64") {
+            this as NativeBenchmarkTarget
+            buildType = NativeBuildType.DEBUG
+        }
     }
 
     configurations {
         named("main") {
-            include("StringFirstBenchmark")
-            mode = "AverageTime"
+            include("StringSubstringBenchmark")
+//            mode = "AverageTime"
 //            advanced("jvmGCAfterIteration", true)
 //            advanced("nativeGCAfterIteration", true)
         }
