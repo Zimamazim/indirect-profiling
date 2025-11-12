@@ -36,7 +36,7 @@ fun native_get_name(frame: RecordedFrame): String? = frame.method.name
     .takeIf { it.startsWith("kfun:") }
     ?.removePrefix("kfun:")
     ?.run { when {
-        endsWith("#internal") -> removeSuffix("#internal")
+        endsWith("#internal") -> removeSuffix("#internal") //TODO Is this correct?
         else -> replace("#", ".").substringBefore("(")
     }}
 
