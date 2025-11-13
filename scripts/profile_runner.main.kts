@@ -6,7 +6,7 @@ import kotlin.time.measureTime
 
 val jvmRootPath = "../targets/serialization-twitterBM/jvm/"
 val nativeRootPath = "../targets/serialization-twitterBM/native/"
-val outputStorage = "../jfrStorage/serialization-twitterBM/sampleInterval_and_cycles_variance_measurement"
+val outputStorage = "../jfrStorage/serialization-twitterBM/new_base_with_memory"
 ProcessBuilder("mkdir", "-p", outputStorage).start().waitFor()
 
 fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
@@ -56,19 +56,17 @@ ProcessBuilder("gradle", "jmhJar")
     .waitFor()
 
 
+val cycles = 100000
+val sampleInterval = 100
 for (iteration in 1..1000) {
-    for (cycles in listOf(100000, 50000, 10000, 5000, 1000, 500, 100)) {
-        for (sampleInterval in listOf(1, 5, 10, 50, 100)) {
-            print("platform: Native, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration ...")
-            val timeNative = measureTime {
-                measureNative(cycles, sampleInterval, iteration)
-            }
-            println(" done in $timeNative")
-            print("platform: JVM, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration ...")
-            val timeJVM = measureTime {
-                measureJmh(cycles, sampleInterval, iteration)
-            }
-            println(" done in $timeJVM")
-        }
+    print("platform: Native, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration ...")
+    val timeNative = measureTime {
+        measureNative(cycles, sampleInterval, iteration)
     }
+    println(" done in $timeNative")
+    print("platform: JVM, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration ...")
+    val timeJVM = measureTime {
+        measureJmh(cycles, sampleInterval, iteration)
+    }
+    println(" done in $timeJVM")
 }
