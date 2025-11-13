@@ -1,7 +1,7 @@
-import jfr_processor.profilelib.jvm_get_name
-import jfr_processor.profilelib.lazy_samples
-import jfr_processor.profilelib.toFreq
-import jfr_processor.profilelib.walkPath
+import profilelib.jvm_get_name
+import profilelib.lazy_samples
+import profilelib.toFreq
+import profilelib.walkPath
 
 import java.io.File
 import kotlin.time.measureTime

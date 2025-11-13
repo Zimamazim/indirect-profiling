@@ -1,6 +1,6 @@
 //@file:Suppress("CAST_NEVER_SUCCEEDS")
 
-package jfr_processor.profilelib
+package profilelib
 
 //@OptIn(kotlin.internal.AccessableStorage::class)
 //@Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")

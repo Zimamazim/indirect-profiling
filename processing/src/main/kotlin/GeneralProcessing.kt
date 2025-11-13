@@ -1,4 +1,4 @@
-package jfr_processor.profilelib
+package profilelib
 
 import java.io.File
 import java.nio.file.Files

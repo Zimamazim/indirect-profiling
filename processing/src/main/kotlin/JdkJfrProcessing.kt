@@ -1,4 +1,4 @@
-package jfr_processor.profilelib
+package profilelib
 
 import jdk.jfr.consumer.RecordedFrame
 import jdk.jfr.consumer.RecordingFile

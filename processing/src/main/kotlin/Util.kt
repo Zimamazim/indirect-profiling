@@ -1,4 +1,4 @@
-package jfr_processor.profilelib
+package profilelib
 
 import java.nio.file.Files
 import kotlin.io.path.Path

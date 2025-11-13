@@ -1,4 +1,4 @@
-package jfr_processor.profilelib
+package profilelib
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

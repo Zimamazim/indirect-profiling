@@ -1,8 +1,8 @@
-package jfr_processor.profilelib.jsonjfr
+package profilelib.jsonjfr
 
 /* Lazy alternatives for processing JFR JSON data */
 
-import jfr_processor.profilelib.get_valid_tests
+import profilelib.get_valid_tests
 
 import kotlinx.serialization.json.*
 import java.io.InputStream

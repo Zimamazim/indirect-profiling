@@ -1,4 +1,4 @@
-package jfr_processor.profilelib.jsonjfr
+package profilelib.jsonjfr
 
 /* Original method, data structures and utility functions for processing JFR
    data. It is based on `jfr print --json` command. Superceded by using
@@ -6,7 +6,7 @@ package jfr_processor.profilelib.jsonjfr
     later. This module is kept if some older notebooks need to be replicated.
  */
 
-import jfr_processor.profilelib.get_valid_tests
+import profilelib.get_valid_tests
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
