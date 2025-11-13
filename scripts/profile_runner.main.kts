@@ -26,10 +26,12 @@ fun measureJmh(cycles: Int, sampleInterval: Int, iteration: Int) {
     ProcessBuilder(
         "java",
         "-jar", "${jvmRootPath}/build/libs/jvm-jmh.jar",
+        "-Xmx48g",
+        "-Xms48g",
         "-bm", "ss",
         "-bs", cycles.toString(),
         "-wbs", cycles.toString(),
-        "-wi", "3",
+        "-wi", "1",
         "-i", "1",
         "-f", "1",
         "-prof", "async:libPath=/opt/async-profiler/lib/libasyncProfiler.so;output=jfr;dir=/tmp/profileoutput/;interval=$sampleInterval"
