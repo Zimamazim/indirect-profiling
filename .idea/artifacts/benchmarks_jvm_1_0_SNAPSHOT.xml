@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="benchmarks-jvm-1.0-SNAPSHOT">
-    <output-path>$PROJECT_DIR$/benchmarks/build/libs</output-path>
-    <root id="archive" name="benchmarks-jvm-1.0-SNAPSHOT.jar">
-      <element id="module-output" name="stdlib-profiling.benchmarks.jvmMain" />
-    </root>
-  </artifact>
-</component>
