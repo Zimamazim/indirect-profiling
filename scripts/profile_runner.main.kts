@@ -6,7 +6,7 @@ import kotlin.time.measureTime
 
 val jvmRootPath = "../targets/serialization-twitterBM/jvm/"
 val nativeRootPath = "../targets/serialization-twitterBM/native/"
-val outputStorage = "../jfrStorage/serialization-twitterBM/new_base_with_memory"
+val outputStorage = "../jfrStorage/serialization-twitterBM/warmup"
 ProcessBuilder("mkdir", "-p", outputStorage).start().waitFor()
 
 fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
@@ -21,17 +21,15 @@ fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
     ProcessBuilder("mv", "/tmp/profile.jfr", file).start().waitFor()
 }
 
-fun measureJmh(cycles: Int, sampleInterval: Int, iteration: Int) {
+fun measureJmh(cycles: Int, sampleInterval: Int, iteration: Int, warmup: Int) {
     ProcessBuilder("mkdir", "/tmp/profileoutput/").start().waitFor()
     ProcessBuilder(
         "java",
         "-jar", "${jvmRootPath}/build/libs/jvm-jmh.jar",
-        "-Xmx48g",
-        "-Xms48g",
         "-bm", "ss",
         "-bs", cycles.toString(),
         "-wbs", cycles.toString(),
-        "-wi", "1",
+        "-wi", warmup.toString(),
         "-i", "1",
         "-f", "1",
         "-prof", "async:libPath=/opt/async-profiler/lib/libasyncProfiler.so;output=jfr;dir=/tmp/profileoutput/;interval=$sampleInterval"
@@ -39,7 +37,7 @@ fun measureJmh(cycles: Int, sampleInterval: Int, iteration: Int) {
         .start()
         .waitFor()
     val outputJFR = walkPath("/tmp/profileoutput/").filter { it.endsWith(".jfr") }.single()
-    ProcessBuilder("mv", outputJFR, "$outputStorage/platform=jvm,cycles=$cycles,sampleInterval=$sampleInterval,iteration=$iteration.jfr").start().waitFor()
+    ProcessBuilder("mv", outputJFR, "$outputStorage/platform=jvm,cycles=$cycles,sampleInterval=$sampleInterval,iteration=$iteration,warmup=$warmup.jfr").start().waitFor()
     ProcessBuilder("rm", "-rf", "/tmp/profileoutput/").start().waitFor()
 }
 
@@ -64,9 +62,11 @@ for (iteration in 1..1000) {
         measureNative(cycles, sampleInterval, iteration)
     }
     println(" done in $timeNative")
-    print("platform: JVM, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration ...")
-    val timeJVM = measureTime {
-        measureJmh(cycles, sampleInterval, iteration)
+    for (warmup in listOf(0, 1, 2, 3, 5, 10)) {
+        print("platform: JVM, cycles: $cycles, sampleInterval: $sampleInterval, iteration: $iteration, warmup: $warmup ...")
+        val timeJVM = measureTime {
+            measureJmh(cycles, sampleInterval, iteration, warmup)
+        }
+        println(" done in $timeJVM")
     }
-    println(" done in $timeJVM")
 }
