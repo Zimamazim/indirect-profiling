@@ -20,5 +20,10 @@ kotlin {
 
 jmh {
     benchmarkMode = listOf("avgt")
-    batchSize = 10000
+    timeOnIteration = "10ms"
+    iterations = 6000
+    fork = 2
+    includes = listOf("big_some_40000_end")
+    resultFormat = "JSON"
+    resultsFile = project.file("results/base.json")
 }
