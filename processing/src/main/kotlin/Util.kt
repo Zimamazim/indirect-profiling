@@ -14,7 +14,7 @@ fun walkPath(path: String): Sequence<String> =
         .map { it.toString() }
         .asSequence()
 
-fun plot_histogram(data: Map<String, List<Int>>): Plot {
+fun <T> plot_histogram(data: Map<String, List<T>>): Plot {
     val list = data.toList()
     val df = dataFrameOf(
         "sample" to list.flatMap { it.second },
