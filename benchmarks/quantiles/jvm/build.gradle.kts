@@ -25,6 +25,6 @@ jmh {
     fork = 2
     includes = listOf("big_some_40000_end")
     resultFormat = "JSON"
-    jvmArgs = listOf("-XX:+UseSerialGC")
-    resultsFile = project.file("results/1ms.json")
+    jvmArgs = listOf("-XX:+UseSerialGC", "-Xmx2g", "-Xms2g")
+    resultsFile = project.file("results/1ms2g.json")
 }
