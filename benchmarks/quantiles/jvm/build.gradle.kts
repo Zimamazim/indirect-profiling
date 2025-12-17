@@ -26,5 +26,6 @@ jmh {
     includes = listOf("big_some_40000_end")
     resultFormat = "JSON"
     jvmArgs = listOf("-XX:+UseSerialGC", "-Xmx2g", "-Xms2g")
-    resultsFile = project.file("results/1ms2g.json")
+    resultsFile = project.file("results/1ms2gwGCprof.json")
+    profilers = listOf("gc")
 }
