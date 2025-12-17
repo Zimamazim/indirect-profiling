@@ -25,5 +25,6 @@ jmh {
     fork = 2
     includes = listOf("big_some_40000_end")
     resultFormat = "JSON"
-    resultsFile = project.file("results/base.json")
+    jvmArgs = listOf("-XX:+UseSerialGC")
+    resultsFile = project.file("results/oldGC.json")
 }
