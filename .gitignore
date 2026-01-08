@@ -1,5 +1,6 @@
 jfrStorage
 benchmarks/quantiles/jvm/results
+benchmarks/quantiles/native/results
 
 gradle
 gradlew
