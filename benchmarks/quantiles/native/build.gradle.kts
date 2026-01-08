@@ -12,6 +12,7 @@ kotlin {
         binaries {
             executable {
                 entryPoint = "org.jetbrains.stdlibprofiling.main"
+//                freeCompilerArgs += "-Xruntime-logs=gc=info"
             }
         }
     }

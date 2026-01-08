@@ -25,13 +25,13 @@ fun main(args: Array<String>) {
     val times = ArrayList<Duration>(measurements)
     repeat(measurements) {
         times.add(measureTime {
-            repeat(1000) {
+            repeat(100) {
                 blackhole.consume(benchmark.big_some_4000_end())
             }
         })
     }
 
-    freopen("results/outer_iter=100000,inner_iter=1000.csv", "w", stdout)
+    freopen("results/outer_iter=100000,inner_iter=100.csv", "w", stdout)
     times
         .map { it.toDouble(DurationUnit.SECONDS) }
         .joinToString(separator = ",") { it.toString() }
