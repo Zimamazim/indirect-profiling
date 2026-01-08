@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
         })
     }
 
-    freopen("result.csv", "w", stdout)
+    freopen("results/outer_iter=100000,inner_iter=1000.csv", "w", stdout)
     times
         .map { it.toDouble(DurationUnit.SECONDS) }
         .joinToString(separator = ",") { it.toString() }
