@@ -20,12 +20,9 @@ kotlin {
 
 jmh {
     benchmarkMode = listOf("avgt")
-    timeOnIteration = "100us"
-    iterations = 600000
+    timeOnIteration = "10ms"
+    iterations = 6000
     fork = 2
-    includes = listOf("big_some_40000_end")
     resultFormat = "JSON"
-    jvmArgs = listOf("-XX:+UseSerialGC", "-Xmx2g", "-Xms2g")
-    resultsFile = project.file("results/100us2gwGCprof.json")
-    profilers = listOf("gc")
+    resultsFile = project.file("results/all.json")
 }
