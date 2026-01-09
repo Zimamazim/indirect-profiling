@@ -8,6 +8,7 @@ import kotlin.io.path.Path
 import kotlin.streams.asSequence
 import org.jetbrains.kotlinx.kandy.ir.Plot
 import org.jetbrains.kotlinx.statistics.kandy.layers.histogram
+import java.io.File
 
 fun walkPath(path: String): Sequence<String> =
     Files.walk(Path(path))
@@ -25,3 +26,8 @@ fun <T> plot_histogram(data: Map<String, List<T>>): Plot {
         histogram("sample")
     }
 }
+
+fun loadCSV(path: String): List<Double> = File(path)
+    .readText()
+    .split(",")
+    .map { it.toDouble() }
