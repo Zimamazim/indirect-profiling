@@ -12,28 +12,70 @@ import platform.posix.stdout
 class SubstringBenchmark {
 
     @Volatile
+    private var small = "abc"
+    @Volatile
     private var big = "abc".repeat(100000)
 
+    fun small_all() = small.substring(0, 3)
+    fun big_all() = big.substring(0, 300_000)
+
+    fun small_none() = small.substring(2, 2)
+    fun big_none() = big.substring(200, 200)
+    fun big_none_end() = big.substring(200_000, 200_000)
+
+    fun small_some() = small.substring(1, 2)
+    fun big_some_4000() = big.substring(5000 - 4000, 5000)
     fun big_some_4000_end() = big.substring(200_000 - 4000, 200_000)
+    fun big_some_40000() = big.substring(50_000 - 40000, 50_000)
+    fun big_some_40000_end() = big.substring(200_000 - 40000, 200_000)
+    fun big_some_100000() = big.substring(150_000, 250_000)
 
 }
+
 @OptIn(ExperimentalForeignApi::class)
-fun main(args: Array<String>) {
-    var benchmark = SubstringBenchmark()
-    var blackhole = Blackhole()
-    val measurements = 100000
-    val times = ArrayList<Duration>(measurements)
-    repeat(measurements) {
+fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmup: Int = 1_000_000, cycles: Int = 100) {
+    val params = mapOf(
+        "name" to name,
+        "iterations" to iterations,
+        "warmup" to warmup,
+        "cycles" to cycles
+    )
+    val blackhole = Blackhole()
+    val times = ArrayList<Duration>(iterations)
+
+    repeat(warmup) { blackhole.consume(method()) }
+    repeat(iterations) {
         times.add(measureTime {
-            repeat(100) {
-                blackhole.consume(benchmark.big_some_4000_end())
+            repeat(cycles) {
+                blackhole.consume(method())
             }
         })
     }
-
-    freopen("results/outer_iter=100000,inner_iter=100.csv", "w", stdout)
+    freopen(
+        params.toList().joinToString(separator = ",", prefix = "results/", postfix = ".csv") { (k, v) -> "$k=$v" },
+        "w",
+        stdout
+    )
     times
         .map { it.toDouble(DurationUnit.SECONDS) }
         .joinToString(separator = ",") { it.toString() }
         .let { println(it) }
+}
+
+fun main(args: Array<String>) {
+    val benchmark = SubstringBenchmark()
+
+    measure(benchmark::small_all, "small_all")
+    measure(benchmark::big_all, "big_all")
+
+    measure(benchmark::small_none, "small_none")
+    measure(benchmark::big_none, "big_none")
+    measure(benchmark::big_none_end, "big_none_end")
+
+    measure(benchmark::small_some, "small_some")
+    measure(benchmark::big_some_4000, "big_some_4000")
+    measure(benchmark::big_some_4000_end, "big_some_4000_end")
+    measure(benchmark::big_some_40000, "big_some_40000")
+    measure(benchmark::big_some_40000_end, "big_some_40000_end")
+    measure(benchmark::big_some_100000, "big_some_100000")
 }
