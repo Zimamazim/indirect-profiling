@@ -27,6 +27,11 @@ kotlin {
 }
 
 benchmark {
+    configurations {
+        register("stringsubstring") {
+            include("StringSubstring")
+        }
+    }
     targets {
         register("jvm")
         register("linuxX64") {
