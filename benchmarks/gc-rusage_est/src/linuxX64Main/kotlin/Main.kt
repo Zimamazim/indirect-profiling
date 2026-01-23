@@ -18,14 +18,11 @@ fun main() {
     }
     val after = currentThreadCpuTime()
 
-    (after.user - before.user)
-        .also {
-            it
-                .let { it / (it + after.sys - before.sys) }
-                .let { println("Pavel: $it") }
-        }
-        .let {
-            it / wallTime.toDouble(DurationUnit.SECONDS)
-        }
-        .let { println("Martin: $it") }
+    val user = after.user - before.user
+    val sys = after.sys - before.sys
+    val wall = wallTime.toDouble(DurationUnit.SECONDS)
+
+    println("Pavel: ${ sys / (user + sys) }")
+    println("user: ${ 1 - user / wall }")
+    println("sys + user: ${ 1 - (sys + user) / wall }")
 }
