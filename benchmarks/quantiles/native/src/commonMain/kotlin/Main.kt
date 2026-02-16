@@ -8,6 +8,7 @@ import kotlin.time.measureTime
 import kotlin.time.DurationUnit
 import platform.posix.freopen
 import platform.posix.stdout
+import kotlin.native.runtime.GC
 
 class SubstringBenchmark {
 
@@ -32,16 +33,21 @@ class SubstringBenchmark {
 
 }
 
+
+@kotlin.native.runtime.NativeRuntimeApi
+@kotlin.ExperimentalStdlibApi
 @OptIn(ExperimentalForeignApi::class)
 fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmup: Int = 1_000_000, cycles: Int = 100) {
     val params = mapOf(
         "name" to name,
         "iterations" to iterations,
         "warmup" to warmup,
-        "cycles" to cycles
+        "cycles" to cycles,
+        "GCprof" to true,
     )
+    var epoch: Long? = null
     val blackhole = Blackhole()
-    val times = ArrayList<Duration>(iterations)
+    val times = ArrayList<Duration?>(iterations)
 
     repeat(warmup) { blackhole.consume(method()) }
     repeat(iterations) {
@@ -50,6 +56,9 @@ fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmu
                 blackhole.consume(method())
             }
         })
+        epoch = GC.lastGCInfo?.epoch.also {
+            if (it != epoch) times.add(null)
+        }
     }
     freopen(
         params.toList().joinToString(separator = ",", prefix = "results/", postfix = ".csv") { (k, v) -> "$k=$v" },
@@ -57,11 +66,13 @@ fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmu
         stdout
     )
     times
-        .map { it.toDouble(DurationUnit.SECONDS) }
+        .map { it?.toDouble(DurationUnit.SECONDS) }
         .joinToString(separator = ",") { it.toString() }
         .let { println(it) }
 }
 
+@kotlin.native.runtime.NativeRuntimeApi
+@kotlin.ExperimentalStdlibApi
 fun main(args: Array<String>) {
     val benchmark = SubstringBenchmark()
 
@@ -75,7 +86,7 @@ fun main(args: Array<String>) {
     measure(benchmark::small_some, "small_some")
     measure(benchmark::big_some_4000, "big_some_4000")
     measure(benchmark::big_some_4000_end, "big_some_4000_end")
-    measure(benchmark::big_some_40000, "big_some_40000")
-    measure(benchmark::big_some_40000_end, "big_some_40000_end")
-    measure(benchmark::big_some_100000, "big_some_100000")
+    measure(benchmark::big_some_40000, "big_some_40000", cycles = 10)
+    measure(benchmark::big_some_40000_end, "big_some_40000_end", cycles = 10)
+    measure(benchmark::big_some_100000, "big_some_100000", cycles = 10)
 }
