@@ -24,5 +24,6 @@ jmh {
     iterations = 6000
     fork = 2
     resultFormat = "JSON"
-    resultsFile = project.file("results/all.json")
+    resultsFile = project.file("results/allGCprof.json")
+    profilers = listOf("gc")
 }
