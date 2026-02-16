@@ -6,7 +6,7 @@ import kotlin.time.measureTime
 
 val jvmRootPath = "../targets/serialization-twitterBM/jvm/"
 val nativeRootPath = "../targets/serialization-twitterBM/native/"
-var outputStorage = "../jfrStorage/serialization-twitterBM/higher_cycles"
+var outputStorage = "../jfrStorage/serialization-twitterBM/cstack_dwarf"
 ProcessBuilder("mkdir", "-p", outputStorage).start().waitFor()
 
 fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
@@ -14,7 +14,7 @@ fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
     ProcessBuilder("$nativeRootPath/build/bin/linuxX64/debugExecutable/native.kexe", cycles.toString()) //FIXME Don't use debug
         .also { it.environment().apply {
             put("LD_PRELOAD", "/opt/async-profiler/lib/libasyncProfiler.so")
-            put("ASPROF_COMMAND", "start,interval=$sampleInterval,file=/tmp/profile.jfr")
+            put("ASPROF_COMMAND", "start,interval=$sampleInterval,cstack=dwarf,file=/tmp/profile.jfr")
         }}
         .start()
         .waitFor()
@@ -54,7 +54,7 @@ ProcessBuilder("gradle", "jmhJar")
     .waitFor()
 
 
-val cycles = 1000000
+val cycles = 100000
 val sampleInterval = 100
 val warmup = 3
 for (iteration in 1..100) {
