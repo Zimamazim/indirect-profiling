@@ -33,6 +33,7 @@ class SubstringBenchmark {
 
 }
 
+val benchmark = SubstringBenchmark()
 
 @kotlin.native.runtime.NativeRuntimeApi
 @kotlin.ExperimentalStdlibApi
@@ -44,16 +45,17 @@ fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmu
         "warmup" to warmup,
         "cycles" to cycles,
         "GCprof" to true,
+        "invocation" to "direct"
     )
     var epoch: Long? = null
     val blackhole = Blackhole()
     val times = ArrayList<Double?>(iterations)
 
-    repeat(warmup) { blackhole.consume(method()) }
+    repeat(warmup) { blackhole.consume(benchmark.big_some_40000()) }
     repeat(iterations) {
         times.add(measureTime {
             repeat(cycles) {
-                blackhole.consume(method())
+                blackhole.consume(benchmark.big_some_40000())
             }
         }.toDouble(DurationUnit.SECONDS))
         epoch = GC.lastGCInfo?.epoch.also {
@@ -73,7 +75,6 @@ fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmu
 @kotlin.native.runtime.NativeRuntimeApi
 @kotlin.ExperimentalStdlibApi
 fun main(args: Array<String>) {
-    val benchmark = SubstringBenchmark()
 
     //measure(benchmark::small_all, "small_all")
     //measure(benchmark::big_all, "big_all")
@@ -83,7 +84,7 @@ fun main(args: Array<String>) {
     //measure(benchmark::big_none_end, "big_none_end")
 
     //measure(benchmark::small_some, "small_some")
-    measure(benchmark::big_some_4000, "big_some_4000")
+    //measure(benchmark::big_some_4000, "big_some_4000")
     //measure(benchmark::big_some_4000_end, "big_some_4000_end")
     measure(benchmark::big_some_40000, "big_some_40000", cycles = 10)
     //measure(benchmark::big_some_40000_end, "big_some_40000_end", cycles = 10)
