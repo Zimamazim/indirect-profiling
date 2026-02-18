@@ -33,6 +33,10 @@ class SubstringBenchmark {
 
 }
 
+
+@Volatile
+var string = "abc".repeat(100000)
+
 val benchmark = SubstringBenchmark()
 
 @kotlin.native.runtime.NativeRuntimeApi
@@ -45,17 +49,17 @@ fun measure(method: () -> String, name: String, iterations: Int = 100_000, warmu
         "warmup" to warmup,
         "cycles" to cycles,
         "GCprof" to true,
-        "invocation" to "direct"
+        "invocation" to "directer"
     )
     var epoch: Long? = null
     val blackhole = Blackhole()
     val times = ArrayList<Double?>(iterations)
 
-    repeat(warmup) { blackhole.consume(benchmark.big_some_40000()) }
+    repeat(warmup) { blackhole.consume(string.substring(10000, 50000)) }
     repeat(iterations) {
         times.add(measureTime {
             repeat(cycles) {
-                blackhole.consume(benchmark.big_some_40000())
+                blackhole.consume(string.substring(10000, 50000))
             }
         }.toDouble(DurationUnit.SECONDS))
         epoch = GC.lastGCInfo?.epoch.also {
