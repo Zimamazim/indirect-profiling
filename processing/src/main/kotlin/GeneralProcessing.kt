@@ -66,7 +66,9 @@ fun match_and_compare_freqs(jvm_freq: FreqMap, native_freq: FreqMap, filterer: (
 
 typealias Data =  Map<Map<String, String>, Map<String, Int>>
 
-fun load_data(dataPath: String): Data =
+fun load_data(dataPath: String,
+              process: (Sequence<List<RecordedFrame>>) -> Sequence<List<RecordedFrame>> = { it }
+): Data =
     walkPath(dataPath)
         .filter { it.endsWith(".jfr") }
         .map { path ->
@@ -78,18 +80,36 @@ fun load_data(dataPath: String): Data =
                 .toMap()
             val freq = mutableMapOf<String, Int>()
             println("'" + path + "'")
-            lazy_samples(path).toFreq(freq, when (params["platform"]) {
-                "jvm" -> ::jvm_get_name
-                "native" -> fun(frame: RecordedFrame): String = frame.method.name
-                    .let { if (it.startsWith("kfun:"))
-                        it.removePrefix("kfun:").replace("#", ".").substringBefore("(")
-                    else
-                        "weirdo:" + it
-                    }
-                else -> throw NotImplementedError("Unknown platform: ${params["platform"]}")
-            })
+            lazy_samples(path)
+                .let { process(it) }
+                .toFreq(freq, when (params["platform"]) {
+                    "jvm" -> ::jvm_get_name
+                    "native" -> fun(frame: RecordedFrame): String = frame.method.name
+                        .let { if (it.startsWith("kfun:"))
+                            it.removePrefix("kfun:").replace("#", ".").substringBefore("(")
+                        else
+                            "weirdo:" + it
+                        }
+                    else -> throw NotImplementedError("Unknown platform: ${params["platform"]}")
+                })
             params to freq.toMap()
         }
         .toMap()
+
+fun Data.funRatio(jvmFun: String, nativeFun: String): List<Double?> = this
+    .toList()
+    .groupBy { (params, _) -> params["iteration"]!! }
+    .mapNotNull { (_, platformPair) ->
+        val jvm = platformPair
+            .singleOrNull { (params, _) -> params["platform"]!! == "jvm" }
+            ?.let { (_, freqs) -> freqs }
+            ?.getOrDefault(jvmFun, 0)
+        val native = platformPair
+            .singleOrNull { (params, _) -> params["platform"]!! == "native" }
+            ?.let { (_, freqs) -> freqs }
+            ?.getOrDefault(nativeFun, 0)
+        if (jvm == null || native == null) null
+        else jvm.toDouble() / native.toDouble()
+    }
 
 
