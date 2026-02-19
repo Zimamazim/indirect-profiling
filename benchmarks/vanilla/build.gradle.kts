@@ -29,7 +29,10 @@ kotlin {
 benchmark {
     configurations {
         register("stringsubstring") {
-            include("StringSubstring")
+            include("StringSubstringBenchmark.small_control")
+            include("StringSubstringBenchmark.medium_control")
+            include("StringSubstringBenchmark.small_some")
+            include("StringSubstringBenchmark.medium_some")
         }
     }
     targets {

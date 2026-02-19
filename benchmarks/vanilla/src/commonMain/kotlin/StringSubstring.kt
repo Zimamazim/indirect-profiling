@@ -8,6 +8,7 @@ import kotlinx.benchmark.State
 class StringSubstringBenchmark {
 
     private var small = "abc"
+    private var medium = "abc".repeat(2)
     private var big = "abc".repeat(100000)
 
     @Benchmark
@@ -34,9 +35,13 @@ class StringSubstringBenchmark {
     fun big_some_40000_end() = big.substring(200_000 - 40000, 200_000)
     @Benchmark
     fun big_some_100000() = big.substring(150_000, 250_000)
+    @Benchmark
+    fun medium_some() = medium.substring(2, 5)
 
     @Benchmark
     fun small_control() = small
+    @Benchmark
+    fun medium_control() = medium
     @Benchmark
     fun big_control() = big
 }
