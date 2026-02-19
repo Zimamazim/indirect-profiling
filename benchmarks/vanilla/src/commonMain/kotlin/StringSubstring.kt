@@ -34,4 +34,9 @@ class StringSubstringBenchmark {
     fun big_some_40000_end() = big.substring(200_000 - 40000, 200_000)
     @Benchmark
     fun big_some_100000() = big.substring(150_000, 250_000)
+
+    @Benchmark
+    fun small_control() = small
+    @Benchmark
+    fun big_control() = big
 }
