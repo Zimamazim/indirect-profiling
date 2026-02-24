@@ -38,6 +38,11 @@ benchmark {
         register("map") {
             include("MapBenchmark")
         }
+
+        register("stringbuilder") {
+            include("StringBuilderBenchmark")
+        }
+
     }
     targets {
         register("jvm")
