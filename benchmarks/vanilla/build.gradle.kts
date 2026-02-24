@@ -34,6 +34,10 @@ benchmark {
             include("StringSubstringBenchmark.small_some")
             include("StringSubstringBenchmark.medium_some")
         }
+
+        register("map") {
+            include("MapBenchmark")
+        }
     }
     targets {
         register("jvm")
