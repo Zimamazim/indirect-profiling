@@ -43,6 +43,12 @@ benchmark {
             include("StringBuilderBenchmark")
         }
 
+        register("avgt") {
+            mode = "avgt"
+            include("StringSubstringBenchmark")
+            include("StringBuilderBenchmark")
+            include("MapBenchmark")
+        }
     }
     targets {
         register("jvm")
