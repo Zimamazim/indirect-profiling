@@ -9,12 +9,11 @@ import kotlinx.benchmark.Setup
 @State(Scope.Benchmark)
 class StringBuilderBenchmark {
 
-    private val builder = StringBuilder()
     private var small = "abc"
     private var medium = small.repeat(100)
     private var big = small.repeat(1000)
 
-    @Benchmark fun appendSmall() = builder.append(small)
-    @Benchmark fun appendMedium() = builder.append(medium)
-    @Benchmark fun appendBig() = builder.append(big)
+    @Benchmark fun appendSmall() = StringBuilder().apply { repeat(1_000_000) { append(small) } }
+    @Benchmark fun appendMedium() = StringBuilder().apply { repeat(10_000) { append(medium) } }
+    @Benchmark fun appendBig() = StringBuilder().apply { repeat(1_000) { append(big) } }
 }
