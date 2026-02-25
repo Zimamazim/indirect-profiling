@@ -24,6 +24,8 @@ fun loadScores(json: JsonElement): Map<String, Double> = json
     .jsonArray.map {
         val name = it.jsonObject["benchmark"]!!.jsonPrimitive.content.substringAfterLast(".")
         val score = it.jsonObject["primaryMetric"]!!.jsonObject["score"]!!.jsonPrimitive.double
-        name to score
+        val params = it.jsonObject["params"]?.jsonObject?.toMap()?.mapValues { it.value.jsonPrimitive.toString() }
+                        ?.takeIf { it.isNotEmpty() }?.toString()?.replace(" ", "") ?: ""
+        (name + params) to score
     }
     .toMap()
