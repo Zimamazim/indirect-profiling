@@ -16,4 +16,5 @@ class StringBuilderBenchmark {
     @Benchmark fun appendSmall() = StringBuilder().apply { repeat(1_000_000) { append(small) } }
     @Benchmark fun appendMedium() = StringBuilder().apply { repeat(10_000) { append(medium) } }
     @Benchmark fun appendBig() = StringBuilder().apply { repeat(1_000) { append(big) } }
+    @Benchmark fun control() = StringBuilder()
 }
