@@ -5,6 +5,8 @@ benchmarks/quantiles/native/experiments
 
 benchmarks/vanilla/report-*.json
 
+benchmarks/jmh/report.json
+
 benchmarks/gc-mem-usage/*.kexe
 benchmarks/gc-mem-usage/*.csv
 
