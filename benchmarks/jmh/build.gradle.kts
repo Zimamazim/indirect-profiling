@@ -12,6 +12,10 @@ dependencies {
     implementation("org.openjdk.jmh:jmh-generator-annprocess:1.37")
 }
 
+jmh {
+    resultFormat = "JSON"
+}
+
 kotlin {
     jvmToolchain(17)
 }
