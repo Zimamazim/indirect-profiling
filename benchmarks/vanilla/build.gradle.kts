@@ -49,6 +49,10 @@ benchmark {
             include("StringBuilderBenchmark")
             include("MapBenchmark")
         }
+        register("randommap") {
+            mode = "avgt"
+            include("RandomMapBenchmark")
+        }
     }
     targets {
         register("jvm")
