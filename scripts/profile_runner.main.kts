@@ -4,8 +4,8 @@ import profilelib.walkPath
 import java.io.File
 import kotlin.time.measureTime
 
-val jvmRootPath = "../targets/serialization-twitterBM/jvm/"
-val nativeRootPath = "../targets/serialization-twitterBM/native/"
+val jvmRootPath = "../workloads/serialization-twitterBM/jvm/"
+val nativeRootPath = "../workloads/serialization-twitterBM/native/"
 var outputStorage = "../jfrStorage/serialization-twitterBM/cstack_dwarf"
 ProcessBuilder("mkdir", "-p", outputStorage).start().waitFor()
 

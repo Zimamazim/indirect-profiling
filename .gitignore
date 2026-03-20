@@ -1,14 +1,4 @@
 jfrStorage
-benchmarks/quantiles/jvm/results
-benchmarks/quantiles/native/results
-benchmarks/quantiles/native/experiments
-
-benchmarks/vanilla/report-*.json
-
-benchmarks/jmh/report.json
-
-benchmarks/gc-mem-usage/*.kexe
-benchmarks/gc-mem-usage/*.csv
 
 gradle
 gradlew
