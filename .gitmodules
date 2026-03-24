@@ -1,0 +1,3 @@
+[submodule "workloads/ktor"]
+	path = workloads/ktor
+	url = git@github.com:Zimamazim/indirect-profiling-ktor.git
