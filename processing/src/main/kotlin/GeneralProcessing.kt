@@ -69,7 +69,7 @@ typealias Data =  Map<Map<String, String>, Map<String, Int>>
 fun load_data(dataPath: String,
               process: (Sequence<List<RecordedFrame>>) -> Sequence<List<RecordedFrame>> = { it }
 ): Data =
-    walkPath(dataPath)
+    walkPath(dataPath(dataPath))
         .filter { it.endsWith(".jfr") }
         .map { path ->
             val params = path

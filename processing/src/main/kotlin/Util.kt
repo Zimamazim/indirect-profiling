@@ -31,3 +31,5 @@ fun loadCSV(path: String): List<Double> = File(path)
     .readText()
     .split(",")
     .map { it.toDouble() }
+
+fun dataPath(path: String): String = "/home/martinzimen/IdeaProjects/stdlib-profiling/data/" + path
