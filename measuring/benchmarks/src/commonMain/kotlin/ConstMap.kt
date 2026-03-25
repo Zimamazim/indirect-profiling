@@ -17,12 +17,12 @@ class ConstMapBenchmark {
     @Setup
     fun prepare() {
         mapF = buildMap {
-            for (i in this@MapBenchmark.size .. 0) {
+            for (i in this@ConstMapBenchmark.size .. 0) {
                 put(i.toString(), i)
             }
         }
         mapB = buildMap {
-            for (i in this@MapBenchmark.size downTo 0) {
+            for (i in this@ConstMapBenchmark.size downTo 0) {
                 put(i.toString(), i)
             }
         }

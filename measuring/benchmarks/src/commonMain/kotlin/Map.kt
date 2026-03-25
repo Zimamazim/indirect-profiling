@@ -16,7 +16,7 @@ open class MapBenchmark {
     @Setup
     fun prepare() {
         map = buildMap {
-            for (i in 0..this@RandomMapBenchmark.size) {
+            for (i in 0..this@MapBenchmark.size) {
                 put(i.toString(), i)
             }
         }
