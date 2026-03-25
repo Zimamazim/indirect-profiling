@@ -1,12 +1,12 @@
-@file:DependsOn("../processing/build/classes/kotlin/main")
+@file:DependsOn("../../processing/build/classes/kotlin/main")
 
 import profilelib.walkPath
 import java.io.File
 import kotlin.time.measureTime
 
-val jvmRootPath = "../workloads/serialization-twitterBM/jvm/"
-val nativeRootPath = "../workloads/serialization-twitterBM/native/"
-var outputStorage = "../jfrStorage/serialization-twitterBM/cstack_dwarf"
+val jvmRootPath = "jvm/"
+val nativeRootPath = "native/"
+var outputStorage = "../../data/jfrs/serialization/cstack_dwarf"
 ProcessBuilder("mkdir", "-p", outputStorage).start().waitFor()
 
 fun measureNative(cycles: Int, sampleInterval: Int, iteration: Int) {
