@@ -1,39 +1,35 @@
 package jmh_is_stupid_and_cant_use_default_package
 
-import kotlinx.benchmark.Benchmark
-import kotlinx.benchmark.Scope
-import kotlinx.benchmark.State
-import kotlinx.benchmark.Param
-import kotlinx.benchmark.Setup
+import kotlinx.benchmark.*
 
-@State(Scope.Benchmark)
-class MapBenchmark {
+@State(Scope.Benchmark) // Scope.Thread is not multiplatform. This cannot be run with multiple threads to prevent sharing the `index` variable
+open class MapBenchmark {
 
-    @Param("10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000")
+    @Param("127", "1023", "8191", "131071")
     public var size: Int = -1
-    private var mapF = emptyMap<String, Int>()
-    private var mapB = emptyMap<String, Int>()
+    @Param("true", "false")
+    public var miss: Boolean = true
+    private var map = emptyMap<String, Int>()
+    private var keys = emptyArray<String>()
+    private var index = 0
 
     @Setup
     fun prepare() {
-        mapF = buildMap {
-            for (i in this@MapBenchmark.size .. 0) {
+        map = buildMap {
+            for (i in 0..this@RandomMapBenchmark.size) {
                 put(i.toString(), i)
             }
         }
-        mapB = buildMap {
-            for (i in this@MapBenchmark.size downTo 0) {
-                put(i.toString(), i)
-            }
+        keys = map.keys.toTypedArray()
+        if (miss) {
+            keys = keys.map { it + "x" }.toTypedArray()
         }
     }
 
-    @Benchmark fun getF2() = mapF["2"]
-    @Benchmark fun getF5() = mapF["5"]
-    @Benchmark fun getF8() = mapF["8"]
-    @Benchmark fun controlF() = mapF
-    @Benchmark fun getB2() = mapB["2"]
-    @Benchmark fun getB5() = mapB["5"]
-    @Benchmark fun getB8() = mapB["8"]
-    @Benchmark fun controlB() = mapB
+
+    @Benchmark fun konst_control() = map
+    @Benchmark fun konst() = map["2"]
+    @Benchmark fun random_control() = keys[index++ and size]
+    @Benchmark fun random() = map[keys[index++ and size]]
+
 }

@@ -28,30 +28,11 @@ kotlin {
 
 benchmark {
     configurations {
-        register("stringsubstring") {
-            include("StringSubstringBenchmark.small_control")
-            include("StringSubstringBenchmark.medium_control")
-            include("StringSubstringBenchmark.small_some")
-            include("StringSubstringBenchmark.medium_some")
-        }
-
-        register("map") {
-            include("MapBenchmark")
-        }
-
-        register("stringbuilder") {
-            include("StringBuilderBenchmark")
-        }
-
-        register("avgt") {
+        register("main") {
             mode = "avgt"
             include("StringSubstringBenchmark")
             include("StringBuilderBenchmark")
             include("MapBenchmark")
-        }
-        register("randommap") {
-            mode = "avgt"
-            include("RandomMapBenchmark")
         }
     }
     targets {
