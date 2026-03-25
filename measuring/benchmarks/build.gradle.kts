@@ -28,7 +28,7 @@ kotlin {
 
 benchmark {
     configurations {
-        register("main") {
+        register("selection") {
             mode = "avgt"
             include("StringSubstringBenchmark")
             include("StringBuilderBenchmark")
