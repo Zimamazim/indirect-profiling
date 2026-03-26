@@ -30,9 +30,11 @@ benchmark {
     configurations {
         register("selection") {
             mode = "avgt"
-            include("StringSubstringBenchmark")
-            include("StringBuilderBenchmark")
-            include("MapBenchmark")
+            include("\\.StringSubstringBenchmark\\.medium")
+            include("\\.StringSubstringBenchmark\\.small_some")
+            include("\\.StringSubstringBenchmark\\.small_control")
+            include("\\.StringBuilderBenchmark")
+            include("\\.MapBenchmark")
         }
     }
     targets {
