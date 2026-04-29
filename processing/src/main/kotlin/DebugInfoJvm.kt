@@ -1,49 +1,5 @@
-//@file:Suppress("CAST_NEVER_SUCCEEDS")
-
 package profilelib
 
-//@OptIn(kotlin.internal.AccessableStorage::class)
-//@Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
-//@OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
-//import org.jetbrains.kotlin.com.intellij.util.io.EnumeratorStringDescriptor
-//import org.jetbrains.kotlin.com.intellij.util.io.ExternalIntegerKeyDescriptor
-//import org.jetbrains.kotlin.fir.session.IncrementalCompilationContext
-//import org.jetbrains.kotlin.incremental.storage.AbstractBasicMap
-//import org.jetbrains.kotlin.incremental.storage.FileToPathConverter
-//import org.jetbrains.kotlin.incremental.storage.toDescriptor
-//import java.io.DataInput
-//import java.io.DataOutput
-//import java.io.File
-//
-//private val LegacyIntExternalizer = ExternalIntegerKeyDescriptor.INSTANCE
-//
-//class LegacyFileExternalizer(private val pathConverter: FileToPathConverter) : DataExternalizer<File> {
-//
-//    override fun save(output: DataOutput, file: File) {
-//        EnumeratorStringDescriptor.INSTANCE.save(output, pathConverter.toPath(file))
-//    }
-//
-//    override fun read(input: DataInput): File {
-//        return pathConverter.toFile(EnumeratorStringDescriptor.INSTANCE.read(input))
-//    }
-//}
-//
-//class IdToFileMap(
-//    storageFile: File,
-//) : AbstractBasicMap<Int, File>(
-//    storageFile,
-//    LegacyIntExternalizer.toDescriptor(),
-//    LegacyFileExternalizer(icContext.pathConverterForSourceFiles),
-//    icContext
-//)
-//
-//fun main() {
-//    val map = IdToFileMap("/home/Martin.Zimen/lookups-example/id-to-file-map" +
-//            ".tab")
-//    print(map.keys)
-//}
-
-//import com.intellij.util.io.IntCollectionDataExternalizer
 import org.jetbrains.kotlin.com.intellij.util.io.*
 import org.jetbrains.kotlin.incremental.storage.IntCollectionExternalizer
 import org.jetbrains.kotlin.incremental.storage.LookupSymbolKeyDescriptor
@@ -55,10 +11,6 @@ import java.io.DataOutput
 import java.lang.classfile.ClassFile
 import java.nio.file.Files
 import kotlin.io.path.Path
-
-//class LookupSymbolKeyDescriptorWrapper(
-//    val delegate: LookupSymbolKeyDescriptor = LookupSymbolKeyDescriptor(true)
-//) : KeyDescriptor<LookupSymbolKey> by delegate {}
 
 class ListExternalizer<T>(private val elementExternalizer: DataExternalizer<T>) : DataExternalizer<List<T>> {
     override fun save(output: DataOutput, value: List<T>) {
@@ -135,9 +87,7 @@ fun get_fun_to_src_map(path: String): Map<String, Set<String>> {
         .toSet()
     assert(atomicfu == atomicfu_orig)
     val file_to_class = walkPath(path)
-//        .filter { it.endsWith(".class") }
         .filter { it.endsWith("source-to-output.tab") }
-//        .single()
         .filterNot { it.contains("/compilePluginsBlocks/") }
         .map {
             load_string_list_map(it)
@@ -165,61 +115,6 @@ fun get_fun_to_src_map(path: String): Map<String, Set<String>> {
         }
 }
 
-
-//fun process_module(root: String): Map<String, String> {
-//    val fun_to_class = process_class_files(root)
-//    val file_to_class =
-//}
-
-fun main() {
-    println(get_fun_to_src_map("/home/Martin.Zimen/IdeaProjects/ktor/ktor-utils/build/").filter { it.value.size != 1 })
-}
-
-val test_root = "/home/Martin" +
-        ".Zimen/IdeaProjects/source_class_mapping_test/build/kotlin" +
-        "/compileKotlin/cacheable/caches-jvm/"
-
-fun tempmain() {
-    println(load_string_list_map(test_root + "inputs/source-to-output.tab"))
-    println(load_string_map(test_root + "jvm/kotlin/class-fq-name-to-source.tab"))
-    println(load_string_map(test_root + "jvm/kotlin/internal-name-to-source.tab"))
-}
-
-fun old_main() {
-    val base =
-        "/home/Martin.Zimen/IdeaProjects/source_class_mapping_test/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/"
-    val id_to_file = PersistentHashMap(
-        Path(base + "id-to-file.tab"),
-        ExternalIntegerKeyDescriptor.INSTANCE,
-        EnumeratorStringDescriptor.INSTANCE
-    )
-    val lookup = PersistentHashMap(
-        Path(base + "lookups.tab"),
-        LookupSymbolKeyDescriptor(true), IntCollectionExternalizer
-    )
-    lookup.processKeys {
-        println(it)
-        println(lookup[it])
-        lookup[it]!!.forEach {
-            println(id_to_file[it])
-        }
-        println();
-        true
-    }
-//    val lookups /*: PersistentHashMap<LookupSymbolKey, Collection<Integer>>*/ =
-//        PersistentMapBuilder.newBuilder<LookupSymbolKey,
-//        Collection<Integer>>(
-//        Path("/home/Martin.Zimen/lookups-example/id-to-file.tab"),
-//        LookupSymbolKeyDescriptor(true),
-//        IntCollectionExternalizer,
-//    ).readonly().build()
-//    val id_to_file = PersistentMapBuilder.newBuilder(
-//        Path("/home/Martin.Zimen/lookups-example/id-to-file.tab"),
-//        ExternalIntegerKeyDescriptor.INSTANCE,
-//        EnumeratorStringDescriptor.INSTANCE,
-//    ).readonly().build()
-//    map.processKeys { println(it); true }
-}
 
 typealias FunToSrcMap = Map<String, Set<String>>
 
