@@ -2,7 +2,7 @@
 
 This repo contains code for a research project that was part of my JetBrains internship and my master thesis.
 
-The published thesis can be found [here](https://mazim.cz/dp.pdf). The attached data [here](https://mazim.cz/dp.zip).
+The published thesis can be found [here](https://mazim.cz/dp.pdf). The attached data [here](https://mazim.cz/dp.zip). The ZIP file is 8.7 GB and 41GB after unzipping.
 
 ## Abstract
 
